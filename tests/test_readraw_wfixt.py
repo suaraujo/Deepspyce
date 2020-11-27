@@ -11,6 +11,10 @@ import io
 import deepspyce as dspy
 
 
+# =============================================================================
+# FIXTURES
+# =============================================================================
+
 @pytest.fixture
 def data_df():
     np.random.seed(42)
@@ -37,6 +41,9 @@ def data_file(data_raw):
 
     return fd
 
+# =============================================================================
+# TESTS
+# =============================================================================
 
 def test_read(data_df, data_raw, data_file):
     df1 = dspy.raw2df(data_file)
@@ -44,3 +51,19 @@ def test_read(data_df, data_raw, data_file):
     df0 = data_df.transpose()
 
     assert pd.testing.assert_frame_equal(df1, df0)
+
+
+def test_estad(data_df, data_file):
+    df1 = dspy.raw2df(data_file)
+    df0 = data_df.transpose()
+
+    a1 = df1.mean()
+    a0 = df0.mean()
+    b1 = df1.median()
+    b0 = df0.median()
+    c1 = df1.std()
+    c2 = df0.std()
+ 
+    assert a1.equals(a0) 
+    assert b1.equals(b0) 
+    assert c1.equals(c0)
